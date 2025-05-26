@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger mb-4">
+            <div class="card-header bg-danger text-white d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <h4 class="m-0">确认删除企业</h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-building fa-4x text-danger mb-3"></i>
+                    <h5>您确定要删除企业"<span class="font-weight-bold">{{ company.name }}</span>"吗？</h5>
+                    <p class="text-muted">此操作不可撤销，删除后将无法恢复数据。</p>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <div class="d-flex">
+                        <div class="mr-3">
+                            <i class="fas fa-info-circle fa-2x text-warning"></i>
+                        </div>
+                        <div>
+                            <h6 class="font-weight-bold">删除将会导致：</h6>
+                            <ul class="mb-0">
+                                <li>企业信息将永久从系统中移除</li>
+                                <li>所有成员关系将被删除</li>
+                                <li>相关的业务数据将无法访问</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger mr-2">
+                            <i class="fas fa-trash mr-1"></i>确认删除
+                        </button>
+                        <a href="{% url 'companies:company_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times mr-1"></i>取消
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

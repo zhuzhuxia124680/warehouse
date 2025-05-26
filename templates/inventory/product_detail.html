@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h4 class="m-0"><i class="fas fa-box mr-2 text-primary"></i>产品详情</h4>
+        <div>
+            <a href="{% url 'inventory:product_list' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left mr-1"></i>返回列表
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <h3 class="mb-3">{{ product.name }}</h3>
+                
+                <div class="mb-4">
+                    <div class="row mb-2">
+                        <div class="col-md-3 text-muted">价格:</div>
+                        <div class="col-md-9 font-weight-bold text-primary">￥{{ product.price }}</div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-3 text-muted">库存数量:</div>
+                        <div class="col-md-9">
+                            <span class="badge badge-pill {% if product.quantity > 10 %}badge-success{% elif product.quantity > 0 %}badge-warning{% else %}badge-danger{% endif %} p-2">
+                                {{ product.quantity }} 件
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-3 text-muted">所属企业:</div>
+                        <div class="col-md-9">{{ product.company.name }}</div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-3 text-muted">描述:</div>
+                        <div class="col-md-9">{{ product.description|linebreaksbr|default:"暂无描述" }}</div>
+                    </div>
+                    
+                    <div class="row mb-2">
+                        <div class="col-md-3 text-muted">创建时间:</div>
+                        <div class="col-md-9">{{ product.created_by|date:'Y年m月d日 H:i' }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 text-muted">更新时间:</div>
+                        <div class="col-md-9">{{ product.updated_by|date:'Y年m月d日 H:i' }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card border-light mb-3">
+                    <div class="card-header bg-light">操作选项</div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'inventory:product_update' pk=product.pk %}" class="btn btn-primary btn-block mb-2">
+                                <i class="fas fa-edit mr-1"></i>编辑产品
+                            </a>
+                            <a href="{% url 'inventory:product_delete' pk=product.pk %}" class="btn btn-danger btn-block">
+                                <i class="fas fa-trash mr-1"></i>删除产品
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>欢迎，{{ user.username }}!</h2>
+    <p>这是你的个人主页。</p>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">库存管理</div>
+                <div class="card-body">
+                    <p class="card-text">查看和管理你的仓库库存产品。</p>
+                    <a href="{% url 'inventory:product_list' %}" class="btn btn-primary">前往库存</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">企业管理</div>
+                <div class="card-body">
+                    <p class="card-text">创建或加入企业，共同管理库存。</p>
+                    <a href="{% url 'companies:company_list' %}" class="btn btn-primary">前往企业</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">好友列表</div>
+                <div class="card-body">
+                    <p class="card-text">查看或添加好友。</p>
+                    <a href="{% url 'social:friend_list' %}" class="btn btn-primary">前往好友</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

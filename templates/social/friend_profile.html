@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="m-0"><i class="fas fa-user mr-2 text-primary"></i>好友资料</h4>
+                    <a href="{% url 'social:friend_list' %}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>返回好友列表
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="m-0"><i class="fas fa-id-card mr-2 text-success"></i>{{ friend.username }}的个人资料</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                            <div class="avatar-container mb-3">
+                                <i class="fas fa-user-circle fa-6x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="mb-3 text-primary">基本信息</h5>
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="pl-0">用户名</th>
+                                            <td>{{ friend.username }}</td>
+                                        </tr>
+                                        {% if friend.email %}
+                                        <tr>
+                                            <th scope="row" class="pl-0">邮箱</th>
+                                            <td>{{ friend.email }}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% if friendship_date %}
+                                        <tr>
+                                            <th scope="row" class="pl-0">成为好友</th>
+                                            <td>{{ friendship_date|date:"Y年m月d日" }}</td>
+                                        </tr>
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="row">
+                        <div class="col-md-6 mb-2 mb-md-0">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="remove_friend" value="1">
+                                <button type="submit" class="btn btn-outline-danger btn-block">
+                                    <i class="fas fa-user-minus mr-1"></i> 删除好友
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="block_user" value="1">
+                                <button type="submit" class="btn btn-danger btn-block">
+                                    <i class="fas fa-ban mr-1"></i> 拉黑用户
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

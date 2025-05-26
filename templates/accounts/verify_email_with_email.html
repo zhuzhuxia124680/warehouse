@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>验证你的邮箱</h2>
+                </div>
+                <div class="card-body">
+                    <p>请输入你注册时使用的邮箱地址和收到的验证码。</p>
+                    
+                    {% if messages %}
+                        <div class="alert alert-info">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        	<div class="form-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">
+                                {{ field.help_text }}
+                                </small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback d-block">
+                                {{ error }}
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block">验证邮箱并登录</button>
+                    </form>
+                    
+                    <hr>
+                    <form action="{% url 'accounts:resend_verification_code' %}" method="post" class="mt-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="email" value="{{ form.email.value|default:'' }}">
+                        <p>没有收到验证码？</p>
+                        <button type="submit" class="btn btn-secondary">重新发送验证码</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p>已有账号？<a href="{% url 'accounts:login' %}">立即登录</a></p>
+                    <p>返回<a href="{% url 'accounts:register' %}">注册页面</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

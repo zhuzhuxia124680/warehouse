@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h4 class="m-0">
+                    <i class="fas fa-building mr-2 text-primary"></i>{{ company.name }}
+                    {% if user == company.owner %}
+                        <span class="badge badge-primary ml-2">所有者</span>
+                    {% else %}
+                        <span class="badge badge-secondary ml-2">成员</span>
+                    {% endif %}
+                </h4>
+                <div>
+                    <a href="{% url 'companies:company_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i>返回列表
+                    </a>
+                    {% if user == company.owner %}
+                        <a href="{% url 'companies:company_delete' pk=company.pk %}" class="btn btn-outline-danger ml-2">
+                            <i class="fas fa-trash mr-1"></i>删除企业
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white">
+                <h5 class="m-0"><i class="fas fa-info-circle mr-2 text-info"></i>企业信息</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">创建时间</dt>
+                    <dd class="col-sm-8">{{ company.created_at|date:"Y-m-d H:i" }}</dd>
+                    
+                    <dt class="col-sm-4">企业所有者</dt>
+                    <dd class="col-sm-8">{{ company.owner.username }}</dd>
+                    
+                    <dt class="col-sm-4">成员数量</dt>
+                    <dd class="col-sm-8">{{ company.members.count }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="m-0"><i class="fas fa-boxes mr-2 text-success"></i>库存产品</h5>
+                <a href="{% url 'inventory:product_create' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus-circle mr-1"></i>添加产品
+                </a>
+            </div>
+            <div class="card-body">
+                {% if products %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>名称</th>
+                                    <th>价格</th>
+                                    <th>库存</th>
+                                    <th>更新时间</th>
+                                    <th class="text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                <tr>
+                                    <td>{{ product.name }}</td>
+                                    <td>￥{{ product.price }}</td>
+                                    <td>
+                                        <span class="badge badge-pill {% if product.quantity > 10 %}badge-success{% elif product.quantity > 0 %}badge-warning{% else %}badge-danger{% endif %} p-2">
+                                            {{ product.quantity }} 件
+                                        </span>
+                                    </td>
+                                    <td>{{ product.updated_by|date:"Y-m-d H:i" }}</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="{% url 'inventory:product_detail' pk=product.pk %}" class="btn btn-sm btn-outline-info" title="查看详情">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'inventory:product_update' pk=product.pk %}" class="btn btn-sm btn-outline-primary" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'inventory:product_delete' pk=product.pk %}" class="btn btn-sm btn-outline-danger" title="删除">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-box-open fa-4x mb-3 text-muted"></i>
+                        <h5 class="text-muted">暂无库存产品</h5>
+                        <p class="text-muted mb-0">点击"添加产品"开始管理库存</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

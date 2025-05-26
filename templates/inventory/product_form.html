@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h4 class="m-0">
+            <i class="fas {% if form.instance.pk %}fa-edit{% else %}fa-plus-circle{% endif %} mr-2 text-primary"></i>
+            {% if form.instance.pk %}编辑产品{% else %}添加新产品{% endif %}
+        </h4>
+        <a href="{% url 'inventory:product_list' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left mr-1"></i>返回列表
+        </a>
+    </div>
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-8">
+                    {% for field in form %}
+                        <div class="form-group mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card border-light mb-3">
+                        <div class="card-header bg-light">操作说明</div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <i class="fas fa-info-circle text-info mr-1"></i>
+                                {% if form.instance.pk %}
+                                    请在左侧表单中修改产品信息，然后点击"更新产品"按钮保存更改。
+                                {% else %}
+                                    请在左侧填写新产品的各项信息，然后点击"创建产品"按钮添加到库存中。
+                                {% endif %}
+                            </p>
+                            <ul class="list-group list-group-flush mt-3">
+                                <li class="list-group-item px-0"><strong>名称</strong>: 产品的名称，便于识别</li>
+                                <li class="list-group-item px-0"><strong>价格</strong>: 产品的销售价格</li>
+                                <li class="list-group-item px-0"><strong>数量</strong>: 产品的当前库存数量</li>
+                                <li class="list-group-item px-0"><strong>描述</strong>: 产品的详细信息（可选）</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 pt-3 border-top d-flex">
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="fas {% if form.instance.pk %}fa-save{% else %}fa-plus-circle{% endif %} mr-1"></i>
+                    {% if form.instance.pk %}更新产品{% else %}创建产品{% endif %}
+                </button>
+                <a href="{% url 'inventory:product_list' %}" class="btn btn-outline-secondary ml-2">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// 为表单字段添加Bootstrap的form-control类
+document.addEventListener('DOMContentLoaded', function() {
+    var formFields = document.querySelectorAll('input, textarea, select');
+    formFields.forEach(function(field) {
+        if (!field.classList.contains('form-control') && field.type !== 'submit' && field.type !== 'button' && field.type !== 'checkbox') {
+            field.classList.add('form-control');
+        }
+        if (field.type === 'checkbox') {
+            field.classList.add('form-check-input');
+            var parent = field.parentElement;
+            if (parent.tagName.toLowerCase() === 'label') {
+                parent.classList.add('form-check-label');
+                var grandParent = parent.parentElement;
+                if (grandParent) {
+                    grandParent.classList.add('form-check');
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
